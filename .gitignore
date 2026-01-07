@@ -1,0 +1,5 @@
+# 忽略二進位檔案
+kubectl
+minikube-linux-amd64
+# 忽略 Helm 的暫存包
+*.tgz
