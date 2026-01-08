@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: my-nginx-monitor
+  namespace: monitoring      # 建議放在監控元件所在的命名空間
+  labels:
+    release: prometheus      # 重要：必須對應你 Helm 安裝時的 Release Name
+spec:
+  selector:
+    matchLabels:
+      # 重要：必須對應 Nginx Service 上的標籤
+      app.kubernetes.io/instance: my-release 
+  namespaceSelector:
+    matchNames:
+      - default              # Nginx 所在的命名空間
+  endpoints:
+  - port: http-metrics  # 改成對應剛才定義的名稱
+    path: /metrics
+    interval: 15s

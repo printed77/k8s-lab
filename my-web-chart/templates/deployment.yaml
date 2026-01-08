@@ -76,3 +76,11 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+# 新增這個 sidecar 容器
+        - name: exporter
+          image: nginx/nginx-prometheus-exporter:latest
+          args:
+            - -nginx.scrape-uri=http://localhost:80/stub_status
+          ports:
+            - name: http-metrics
+              containerPort: 9113
