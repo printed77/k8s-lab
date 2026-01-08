@@ -7,11 +7,13 @@ alertmanager:
       group_wait: 10s
       group_interval: 10s
       repeat_interval: 1h
-      receiver: 'telegram-notifications'
+      # 強制指定一個存在的 receiver
+      receiver: 'telegram-notif'
     receivers:
-    - name: 'telegram-notifications'
+    - name: 'telegram-notif'
       telegram_configs:
-      - bot_token: '你的_BOT_TOKEN'
-        chat_id: 你的_CHAT_ID
+      - bot_token: '8220650877:AAGVopbAY2oDpg3x0RZ3EuLRsN4kqsbqbv8'
+        chat_id: 7356555732
         send_resolved: true
-        message: '告警名稱: {{ .GroupLabels.alertname }}\n狀態: {{ .Status }}\n詳情: {{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}'
+    # 增加一個空接收器，防止 Operator 報錯找不到 null
+    - name: 'null'
