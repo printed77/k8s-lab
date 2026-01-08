@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nginx-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus # 這裡必須對應你 helm list 看到的 prometheus 名稱
+spec:
+  groups:
+  - name: nginx.rules
+    rules:
+    - alert: NginxIsDown
+      expr: nginx_up == 0
+      for: 30s # 持續 30 秒抓不到資料就報警
+      labels:
+        severity: critical
+      annotations:
+        summary: "⚠️ 警告：Nginx 服務已斷線！"
+        description: "Pod {{ $labels.instance }} 的 Nginx 容器目前無法存取，請立即檢查。"
